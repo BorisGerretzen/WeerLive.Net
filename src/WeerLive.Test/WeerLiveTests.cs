@@ -1,108 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
-using Moq;
 using RichardSzalay.MockHttp;
-using WeerLive.Lib;
 using WeerLive.Lib.Client;
 
 namespace WeerLive.Test;
 
 public class WeerLiveTests
 {
-    [Test]
-    public async Task GetAsync_DemoLocation()
-    {
-        var httpClient = MockClient("?key=demo&locatie=Amsterdam", DemoResponse);
-        var options = Options.Create(new WeerLiveOptions { ApiKey = "demo" });
-        var client = new WeerLiveClient(httpClient, options);
-
-        var response = await client.GetAsync("Amsterdam");
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(response, Is.Not.Null);
-            Assert.That(response!.LiveWeatherList, Has.Count.EqualTo(1));
-            Assert.That(response.LiveWeather!.Place, Is.EqualTo("Amsterdam"));
-            Assert.That(response.LiveWeather.Temperature, Is.EqualTo(18.9));
-            Assert.That(response.LiveWeather.TemperaturePerceived, Is.EqualTo(17.3));
-            Assert.That(response.LiveWeather.Summary, Is.EqualTo("Licht bewolkt"));
-            Assert.That(response.LiveWeather.Humidity, Is.EqualTo(71));
-            Assert.That(response.LiveWeather.WindDirection, Is.EqualTo("ONO"));
-            Assert.That(response.LiveWeather.WindDirectionDegrees, Is.EqualTo(62.1));
-            Assert.That(response.LiveWeather.WindSpeedMs, Is.EqualTo(6.33));
-            Assert.That(response.LiveWeather.WindSpeedBft, Is.EqualTo(4));
-            Assert.That(response.LiveWeather.WindSpeedKn, Is.EqualTo(12.3));
-            Assert.That(response.LiveWeather.WindSpeedKmh, Is.EqualTo(22.8));
-            Assert.That(response.LiveWeather.AirPressure, Is.EqualTo(1021.51));
-            Assert.That(response.LiveWeather.AirPressureMmHg, Is.EqualTo(766));
-            Assert.That(response.LiveWeather.DewPoint, Is.EqualTo(13.6));
-            Assert.That(response.LiveWeather.Visibility, Is.EqualTo(30400));
-            Assert.That(response.LiveWeather.SolarIrradiance, Is.EqualTo(0));
-            Assert.That(response.LiveWeather.DayForecast,
-                Is.EqualTo("Vrij zonnig en vrijwel overal droog. Zondag in het zuiden tropisch warm"));
-            Assert.That(response.LiveWeather.Sunrise, Is.EqualTo("06:49"));
-            Assert.That(response.LiveWeather.Sunset, Is.EqualTo("20:32"));
-            Assert.That(response.LiveWeather.Image, Is.EqualTo("wolkennacht"));
-            Assert.That(response.LiveWeather.WeatherAlert, Is.EqualTo(0));
-            Assert.That(response.LiveWeather.WeatherAlertHeader, Is.EqualTo("Er zijn geen waarschuwingen"));
-            Assert.That(response.LiveWeather.WeatherAlertDescription,
-                Is.EqualTo(" Er zijn momenteel geen waarschuwingen van kracht."));
-            Assert.That(response.LiveWeather.WarningColor, Is.EqualTo("groen"));
-            Assert.That(response.LiveWeather.WeatherAlertStart, Is.EqualTo("-"));
-            Assert.That(response.LiveWeather.WeatherAlertTimestamp, Is.EqualTo(0));
-            Assert.That(response.LiveWeather.WeatherAlertColorCode, Is.EqualTo("-"));
-        });
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(response.WeekForecast, Has.Count.EqualTo(5));
-            Assert.That(response.WeekForecast[0].Day, Is.EqualTo("31-08-2024"));
-            Assert.That(response.WeekForecast[0].Image, Is.EqualTo("halfbewolkt"));
-            Assert.That(response.WeekForecast[0].MaxTemperature, Is.EqualTo(19));
-            Assert.That(response.WeekForecast[0].MinTemperature, Is.EqualTo(19));
-            Assert.That(response.WeekForecast[0].WindSpeedBft, Is.EqualTo(3));
-            Assert.That(response.WeekForecast[0].WindSpeedKmh, Is.EqualTo(18));
-            Assert.That(response.WeekForecast[0].WindSpeedKn, Is.EqualTo(10));
-            Assert.That(response.WeekForecast[0].WindSpeedMs, Is.EqualTo(5));
-            Assert.That(response.WeekForecast[0].WindDirectionDegrees, Is.EqualTo(67));
-            Assert.That(response.WeekForecast[0].WindDirection, Is.EqualTo("NO"));
-            Assert.That(response.WeekForecast[0].ProbabilityPrecipitation, Is.EqualTo(0));
-            Assert.That(response.WeekForecast[0].ProbabilitySunshine, Is.EqualTo(91));
-        });
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(response.HourForecast, Has.Count.EqualTo(24));
-            Assert.That(response.HourForecast[0].Hour, Is.EqualTo("31-08-2024 23:00"));
-            Assert.That(response.HourForecast[0].Image, Is.EqualTo("nachtbewolkt"));
-            Assert.That(response.HourForecast[0].Temperature, Is.EqualTo(19));
-            Assert.That(response.HourForecast[0].WindSpeedBft, Is.EqualTo(4));
-            Assert.That(response.HourForecast[0].WindSpeedKmh, Is.EqualTo(21));
-            Assert.That(response.HourForecast[0].WindSpeedKn, Is.EqualTo(12));
-            Assert.That(response.HourForecast[0].WindSpeedMs, Is.EqualTo(6));
-            Assert.That(response.HourForecast[0].WindDirectionDegrees, Is.EqualTo(71));
-            Assert.That(response.HourForecast[0].WindDirectionString, Is.EqualTo("NO"));
-            Assert.That(response.HourForecast[0].Precipitation, Is.EqualTo(0));
-            Assert.That(response.HourForecast[0].SolarIrradiance, Is.EqualTo(0));
-        });
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(response.ApiInformationList, Has.Count.EqualTo(1));
-            Assert.That(response.ApiInformation!.Source, Is.EqualTo("Bron: Weerdata KNMI/NOAA via Weerlive.nl"));
-            Assert.That(response.ApiInformation.MaxRequests, Is.EqualTo(300));
-            Assert.That(response.ApiInformation.RemainingRequests, Is.EqualTo(0));
-        });
-    }
-
-    private static HttpClient MockClient(string query, string expectedResponse)
-    {
-        var handlerMock = new MockHttpMessageHandler();
-        handlerMock
-            .When(HttpMethod.Get, $"https://weerlive.nl/api/weerlive_api_v2.php{query}")
-            .Respond("application/json", expectedResponse);
-        return new HttpClient(handlerMock);
-    }
-
     private const string DemoResponse = """
                                         {
                                             "liveweer": [
@@ -557,4 +460,99 @@ public class WeerLiveTests
                                             ]
                                         }
                                         """;
+
+    [Test]
+    public async Task GetAsync_DemoLocation()
+    {
+        var httpClient = MockClient("?key=demo&locatie=Amsterdam", DemoResponse);
+        var options = Options.Create(new WeerLiveOptions { ApiKey = "demo" });
+        var client = new WeerLiveClient(httpClient, options);
+
+        var response = await client.GetAsync("Amsterdam");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response!.LiveWeatherList, Has.Count.EqualTo(1));
+            Assert.That(response.LiveWeather!.Place, Is.EqualTo("Amsterdam"));
+            Assert.That(response.LiveWeather.Temperature, Is.EqualTo(18.9));
+            Assert.That(response.LiveWeather.TemperaturePerceived, Is.EqualTo(17.3));
+            Assert.That(response.LiveWeather.Summary, Is.EqualTo("Licht bewolkt"));
+            Assert.That(response.LiveWeather.Humidity, Is.EqualTo(71));
+            Assert.That(response.LiveWeather.WindDirection, Is.EqualTo("ONO"));
+            Assert.That(response.LiveWeather.WindDirectionDegrees, Is.EqualTo(62.1));
+            Assert.That(response.LiveWeather.WindSpeedMs, Is.EqualTo(6.33));
+            Assert.That(response.LiveWeather.WindSpeedBft, Is.EqualTo(4));
+            Assert.That(response.LiveWeather.WindSpeedKn, Is.EqualTo(12.3));
+            Assert.That(response.LiveWeather.WindSpeedKmh, Is.EqualTo(22.8));
+            Assert.That(response.LiveWeather.AirPressure, Is.EqualTo(1021.51));
+            Assert.That(response.LiveWeather.AirPressureMmHg, Is.EqualTo(766));
+            Assert.That(response.LiveWeather.DewPoint, Is.EqualTo(13.6));
+            Assert.That(response.LiveWeather.Visibility, Is.EqualTo(30400));
+            Assert.That(response.LiveWeather.SolarIrradiance, Is.EqualTo(0));
+            Assert.That(response.LiveWeather.DayForecast,
+                Is.EqualTo("Vrij zonnig en vrijwel overal droog. Zondag in het zuiden tropisch warm"));
+            Assert.That(response.LiveWeather.Sunrise, Is.EqualTo("06:49"));
+            Assert.That(response.LiveWeather.Sunset, Is.EqualTo("20:32"));
+            Assert.That(response.LiveWeather.Image, Is.EqualTo("wolkennacht"));
+            Assert.That(response.LiveWeather.WeatherAlert, Is.EqualTo(0));
+            Assert.That(response.LiveWeather.WeatherAlertHeader, Is.EqualTo("Er zijn geen waarschuwingen"));
+            Assert.That(response.LiveWeather.WeatherAlertDescription,
+                Is.EqualTo(" Er zijn momenteel geen waarschuwingen van kracht."));
+            Assert.That(response.LiveWeather.WarningColor, Is.EqualTo("groen"));
+            Assert.That(response.LiveWeather.WeatherAlertStart, Is.EqualTo("-"));
+            Assert.That(response.LiveWeather.WeatherAlertTimestamp, Is.EqualTo(0));
+            Assert.That(response.LiveWeather.WeatherAlertColorCode, Is.EqualTo("-"));
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.WeekForecast, Has.Count.EqualTo(5));
+            Assert.That(response.WeekForecast[0].Day, Is.EqualTo("31-08-2024"));
+            Assert.That(response.WeekForecast[0].Image, Is.EqualTo("halfbewolkt"));
+            Assert.That(response.WeekForecast[0].MaxTemperature, Is.EqualTo(19));
+            Assert.That(response.WeekForecast[0].MinTemperature, Is.EqualTo(19));
+            Assert.That(response.WeekForecast[0].WindSpeedBft, Is.EqualTo(3));
+            Assert.That(response.WeekForecast[0].WindSpeedKmh, Is.EqualTo(18));
+            Assert.That(response.WeekForecast[0].WindSpeedKn, Is.EqualTo(10));
+            Assert.That(response.WeekForecast[0].WindSpeedMs, Is.EqualTo(5));
+            Assert.That(response.WeekForecast[0].WindDirectionDegrees, Is.EqualTo(67));
+            Assert.That(response.WeekForecast[0].WindDirection, Is.EqualTo("NO"));
+            Assert.That(response.WeekForecast[0].ProbabilityPrecipitation, Is.EqualTo(0));
+            Assert.That(response.WeekForecast[0].ProbabilitySunshine, Is.EqualTo(91));
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.HourForecast, Has.Count.EqualTo(24));
+            Assert.That(response.HourForecast[0].Hour, Is.EqualTo("31-08-2024 23:00"));
+            Assert.That(response.HourForecast[0].Image, Is.EqualTo("nachtbewolkt"));
+            Assert.That(response.HourForecast[0].Temperature, Is.EqualTo(19));
+            Assert.That(response.HourForecast[0].WindSpeedBft, Is.EqualTo(4));
+            Assert.That(response.HourForecast[0].WindSpeedKmh, Is.EqualTo(21));
+            Assert.That(response.HourForecast[0].WindSpeedKn, Is.EqualTo(12));
+            Assert.That(response.HourForecast[0].WindSpeedMs, Is.EqualTo(6));
+            Assert.That(response.HourForecast[0].WindDirectionDegrees, Is.EqualTo(71));
+            Assert.That(response.HourForecast[0].WindDirectionString, Is.EqualTo("NO"));
+            Assert.That(response.HourForecast[0].Precipitation, Is.EqualTo(0));
+            Assert.That(response.HourForecast[0].SolarIrradiance, Is.EqualTo(0));
+        });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.ApiInformationList, Has.Count.EqualTo(1));
+            Assert.That(response.ApiInformation!.Source, Is.EqualTo("Bron: Weerdata KNMI/NOAA via Weerlive.nl"));
+            Assert.That(response.ApiInformation.MaxRequests, Is.EqualTo(300));
+            Assert.That(response.ApiInformation.RemainingRequests, Is.EqualTo(0));
+        });
+    }
+
+    private static HttpClient MockClient(string query, string expectedResponse)
+    {
+        var handlerMock = new MockHttpMessageHandler();
+        handlerMock
+            .When(HttpMethod.Get, $"https://weerlive.nl/api/weerlive_api_v2.php{query}")
+            .Respond("application/json", expectedResponse);
+        return new HttpClient(handlerMock);
+    }
 }
