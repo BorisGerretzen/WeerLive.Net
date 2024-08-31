@@ -9,7 +9,7 @@ The location can be either a city name or latitude and longitude coordinates.
 
 ## Usage
 Here you can see a simple example of how to use the library combined with the Microsoft.Extensions.DependencyInjection library.
-This example can also be found in the [example project](https://github.com/BorisGerretzen/WeerLive.Net/tree/main/WeerLive.Example).
+This example can also be found in the [example project](https://github.com/BorisGerretzen/WeerLive.Net/tree/main/src/WeerLive.Example).
 
 ```csharp
 var builder = Host.CreateDefaultBuilder(args);
