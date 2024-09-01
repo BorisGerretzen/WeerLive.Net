@@ -38,182 +38,182 @@ public class WeerLiveLiveWeather(
     ///     The location of the weather data.
     /// </summary>
     [JsonPropertyName("plaats")]
-    public string Place { get; set; } = place;
+    public string Place { get; } = place;
 
     /// <summary>
     ///     The timestamp of the weather data in unix seconds.
     /// </summary>
     [JsonPropertyName("timestamp")]
-    public long Timestamp { get; set; } = timestamp;
+    public long Timestamp { get; } = timestamp;
 
     /// <summary>
     ///     The date and time of the weather data in CET.
     ///     <example>31-08-2024 22:18:03</example>
     /// </summary>
     [JsonPropertyName("time")]
-    public string Time { get; set; } = time;
+    public string Time { get; } = time;
 
     /// <summary>
     ///     The temperature in degrees Celsius.
     /// </summary>
     [JsonPropertyName("temp")]
-    public double Temperature { get; set; } = temperature;
+    public double Temperature { get; } = temperature;
 
     /// <summary>
     ///     The perceived temperature in degrees Celsius.
     /// </summary>
     [JsonPropertyName("gtemp")]
-    public double TemperaturePerceived { get; set; } = temperaturePerceived;
+    public double TemperaturePerceived { get; } = temperaturePerceived;
 
     /// <summary>
     ///     The summary of the weather in Dutch.
     /// </summary>
     [JsonPropertyName("samenv")]
-    public string Summary { get; set; } = summary;
+    public string Summary { get; } = summary;
 
     /// <summary>
     ///     Relative humidity in percent points.
     /// </summary>
     [JsonPropertyName("lv")]
-    public int Humidity { get; set; } = humidity;
+    public int Humidity { get; } = humidity;
 
     /// <summary>
     ///     Wind direction in compass direction (Dutch).
     /// </summary>
     [JsonPropertyName("windr")]
-    public string WindDirection { get; set; } = windDirection;
+    public string WindDirection { get; } = windDirection;
 
     /// <summary>
     ///     Wind direction in degrees.
     /// </summary>
     [JsonPropertyName("windrgr")]
-    public double WindDirectionDegrees { get; set; } = windDirectionDegrees;
+    public double WindDirectionDegrees { get; } = windDirectionDegrees;
 
     /// <summary>
     ///     Wind speed in meters per second.
     /// </summary>
     [JsonPropertyName("windms")]
-    public double WindSpeedMs { get; set; } = windSpeedMs;
+    public double WindSpeedMs { get; } = windSpeedMs;
 
     /// <summary>
     ///     Wind speed in Beaufort.
     /// </summary>
     [JsonPropertyName("windbft")]
-    public int WindSpeedBft { get; set; } = windSpeedBft;
+    public int WindSpeedBft { get; } = windSpeedBft;
 
     /// <summary>
     ///     Wind speed in knots.
     /// </summary>
     [JsonPropertyName("windknp")]
-    public double WindSpeedKn { get; set; } = windSpeedKn;
+    public double WindSpeedKn { get; } = windSpeedKn;
 
     /// <summary>
     ///     Wind speed in kilometers per hour.
     /// </summary>
     [JsonPropertyName("windkmh")]
-    public double WindSpeedKmh { get; set; } = windSpeedKmh;
+    public double WindSpeedKmh { get; } = windSpeedKmh;
 
     /// <summary>
     ///     Air pressure in hPa.
     /// </summary>
     [JsonPropertyName("luchtd")]
-    public double AirPressure { get; set; } = airPressure;
+    public double AirPressure { get; } = airPressure;
 
     /// <summary>
     ///     Air pressure in mmHg.
     /// </summary>
     [JsonPropertyName("ldmmhg")]
-    public int AirPressureMmHg { get; set; } = airPressureMmHg;
+    public int AirPressureMmHg { get; } = airPressureMmHg;
 
     /// <summary>
     ///     Dew point in degrees Celsius.
     /// </summary>
     [JsonPropertyName("dauwp")]
-    public double DewPoint { get; set; } = dewPoint;
+    public double DewPoint { get; } = dewPoint;
 
     /// <summary>
     ///     Visibility in kilometers.
     /// </summary>
     [JsonPropertyName("zicht")]
-    public int Visibility { get; set; } = visibility;
+    public int Visibility { get; } = visibility;
 
     /// <summary>
     ///     Solar irradiance in W/m^2.
     /// </summary>
     [JsonPropertyName("gr")]
-    public int SolarIrradiance { get; set; } = solarIrradiance;
+    public int SolarIrradiance { get; } = solarIrradiance;
 
     /// <summary>
     ///     Short day forecast in Dutch.
     /// </summary>
     [JsonPropertyName("verw")]
-    public string DayForecast { get; set; } = dayForecast;
+    public string DayForecast { get; } = dayForecast;
 
     /// <summary>
     ///     The time of sunrise in (presumably) CET.
     /// </summary>
     /// <example>06:49</example>
     [JsonPropertyName("sup")]
-    public string Sunrise { get; set; } = sunrise;
+    public string Sunrise { get; } = sunrise;
 
     /// <summary>
     ///     The time of sunset in (presumably) CET.
     /// </summary>
     /// <example>20:32</example>
     [JsonPropertyName("sunder")]
-    public string Sunset { get; set; } = sunset;
+    public string Sunset { get; } = sunset;
 
     /// <summary>
     ///     Image name of the forecast.
     /// </summary>
     [JsonPropertyName("image")]
-    public string Image { get; set; } = image;
+    public string Image { get; } = image;
 
     /// <summary>
     ///     Indicates if there is a weather alert.
     /// </summary>
     [JsonPropertyName("alarm")]
-    public int WeatherAlert { get; set; } = weatherAlert;
+    public int WeatherAlert { get; } = weatherAlert;
 
     /// <summary>
     ///     Weather alert header.
     /// </summary>
     [JsonPropertyName("lkop")]
-    public string WeatherAlertHeader { get; set; } = weatherAlertHeader;
+    public string WeatherAlertHeader { get; } = weatherAlertHeader;
 
     /// <summary>
     ///     Weather alert description.
     /// </summary>
     [JsonPropertyName("ltekst")]
-    public string WeatherAlertDescription { get; set; } = weatherAlertDescription;
+    public string WeatherAlertDescription { get; } = weatherAlertDescription;
 
     /// <summary>
     ///     KNMI color code for the region.
     /// </summary>
     [JsonPropertyName("wrschklr")]
-    public string WarningColor { get; set; } = warningColor;
+    public string WarningColor { get; } = warningColor;
 
     /// <summary>
     ///     Time the weather alert starts.
     /// </summary>
     [JsonPropertyName("wrsch_g")]
-    public string WeatherAlertStart { get; set; } = weatherAlertStart;
+    public string WeatherAlertStart { get; } = weatherAlertStart;
 
     /// <summary>
     ///     Weather alert timestamp.
     /// </summary>
     [JsonPropertyName("wrsch_gts")]
-    public long WeatherAlertTimestamp { get; set; } = weatherAlertTimestamp;
+    public long WeatherAlertTimestamp { get; } = weatherAlertTimestamp;
 
     /// <summary>
     ///     KNMI color code for the weather alert.
     /// </summary>
     [JsonPropertyName("wrsch_gc")]
-    public string WeatherAlertColorCode { get; set; } = weatherAlertColorCode;
+    public string WeatherAlertColorCode { get; } = weatherAlertColorCode;
 
     /// <summary>
     ///     Error message if the request failed.
     /// </summary>
     [JsonPropertyName("fout")]
-    public string? Error { get; set; } = error;
+    public string? Error { get; } = error;
 }

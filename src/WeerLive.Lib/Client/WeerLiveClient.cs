@@ -8,8 +8,6 @@ namespace WeerLive.Lib.Client;
 public class WeerLiveClient(HttpClient client, IOptions<WeerLiveOptions> options)
     : IWeerLiveClient
 {
-    private const string BaseUrl = "https://weerlive.nl/api/weerlive_api_v2.php";
-
     public async Task<WeerLiveResponse> GetAsync(string location, string? apiKey = null,
         CancellationToken token = default)
     {
@@ -43,7 +41,7 @@ public class WeerLiveClient(HttpClient client, IOptions<WeerLiveOptions> options
 
     private async Task<WeerLiveResponse> GetAsync(string query, CancellationToken token)
     {
-        var response = await client.GetAsync($"{BaseUrl}?{query}", token);
+        var response = await client.GetAsync($"{options.Value.BaseUrl}?{query}", token);
         response.EnsureSuccessStatusCode();
 
         var responseContent = await response.Content.ReadFromJsonAsync<WeerLiveResponse>(token);

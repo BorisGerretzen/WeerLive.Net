@@ -22,19 +22,19 @@ public class WeerLiveWeekForecast(
     ///     <example>31-08-2024</example>
     /// </summary>
     [JsonPropertyName("dag")]
-    public string Day { get; init; } = day;
+    public string Day { get; } = day;
 
     /// <summary>
     ///     Image name of the forecast.
     /// </summary>
     [JsonPropertyName("image")]
-    public string Image { get; init; } = image;
+    public string Image { get; } = image;
 
     /// <summary>
     ///     Maximum temperature in degrees Celsius.
     /// </summary>
     [JsonPropertyName("max_temp")]
-    public int MaxTemperature { get; init; } = maxTemperature;
+    public int MaxTemperature { get; } = maxTemperature;
 
     /// <summary>
     ///     Minimum temperature in degrees Celsius.
@@ -46,47 +46,47 @@ public class WeerLiveWeekForecast(
     ///     Wind speed in Beaufort.
     /// </summary>
     [JsonPropertyName("windbft")]
-    public int WindSpeedBft { get; init; } = windSpeedBft;
+    public int WindSpeedBft { get; } = windSpeedBft;
 
     /// <summary>
     ///     Wind speed in kilometers per hour.
     /// </summary>
     [JsonPropertyName("windkmh")]
-    public int WindSpeedKmh { get; init; } = windSpeedKmh;
+    public int WindSpeedKmh { get; } = windSpeedKmh;
 
     /// <summary>
     ///     Wind speed in knots.
     /// </summary>
     [JsonPropertyName("windknp")]
-    public int WindSpeedKn { get; init; } = windSpeedKn;
+    public int WindSpeedKn { get; } = windSpeedKn;
 
     /// <summary>
     ///     Wind speed in meters per second.
     /// </summary>
     [JsonPropertyName("windms")]
-    public int WindSpeedMs { get; init; } = windSpeedMs;
+    public int WindSpeedMs { get; } = windSpeedMs;
 
     /// <summary>
     ///     Wind direction in degrees.
     /// </summary>
     [JsonPropertyName("windrgr")]
-    public int WindDirectionDegrees { get; init; } = windDirectionDegrees;
+    public int WindDirectionDegrees { get; } = windDirectionDegrees;
 
     /// <summary>
     ///     Wind direction in compass direction (Dutch).
     /// </summary>
     [JsonPropertyName("windr")]
-    public string WindDirection { get; init; } = windDirection;
+    public string WindDirection { get; } = windDirection;
 
     /// <summary>
     ///     Probability of precipitation in percent points.
     /// </summary>
     [JsonPropertyName("neersl_perc_dag")]
-    public int ProbabilityPrecipitation { get; init; } = probabilityPrecipitation;
+    public int ProbabilityPrecipitation { get; } = probabilityPrecipitation;
 
     /// <summary>
     ///     Probability of sun in percent points.
     /// </summary>
     [JsonPropertyName("zond_perc_dag")]
-    public int ProbabilitySunshine { get; init; } = probabilitySunshine;
+    public int ProbabilitySunshine { get; } = probabilitySunshine;
 }
