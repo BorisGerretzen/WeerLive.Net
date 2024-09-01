@@ -1,6 +1,7 @@
 ﻿# WeerLive.Net
 
-WeerLive.Net is a library for the Dutch weather service [WeerLive](https://weerlive.nl/delen.php).
+WeerLive.Net is a library for the Dutch weather service [WeerLive](https://weerlive.nl/delen.php), the data comes
+directly from the 10-minutes network.
 This library provides the following features:
 
 - Get the live weather for a location
