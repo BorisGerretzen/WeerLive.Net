@@ -116,7 +116,7 @@ class Build : NukeBuild
                 .SetProject(LibProject)
                 .SetConfiguration(Configuration)
                 .SetOutputDirectory(ArtifactsDirectory)
-                .SetProperty("PackageVersion", PackageVersion ?? GitVersion.NuGetVersionV2)
+                .SetProperty("PackageVersion", PackageVersion ?? GitVersion.AssemblySemFileVer)
             );
         });
 
@@ -132,7 +132,7 @@ class Build : NukeBuild
                 )
             );
 
-            var version = PackageVersion ?? GitVersion.NuGetVersionV2;
+            var version = PackageVersion ?? GitVersion.AssemblySemFileVer;
 
             // check if current version is already tagged
             if (Git($"tag --list {version}").Count != 0)
