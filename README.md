@@ -1,4 +1,5 @@
 ﻿# WeerLive.Net
+[![NuGet](https://img.shields.io/nuget/v/WeerLive.svg)](https://www.nuget.org/packages/WeerLive/)\
 
 WeerLive.Net is a library for the Dutch weather service [WeerLive](https://weerlive.nl/delen.php), the data comes
 directly from the 10-minutes network.
