@@ -10,40 +10,49 @@ public class WeerLiveClient(HttpClient client, IOptions<WeerLiveOptions> options
 {
     private const string BaseUrl = "https://weerlive.nl/api/weerlive_api_v2.php";
 
-    public async Task<WeerLiveResponse?> GetAsync(string location, string? apiKey = null,
+    public async Task<WeerLiveResponse> GetAsync(string location, string? apiKey = null,
         CancellationToken token = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["key"] = apiKey ?? options.Value.ApiKey;
         query["locatie"] = location;
 
-        var response = await client.GetAsync($"{BaseUrl}?{query}", token);
-        response.EnsureSuccessStatusCode();
-        var str = await response.Content.ReadAsStringAsync(token);
-        return await response.Content.ReadFromJsonAsync<WeerLiveResponse>(token);
+        return await GetAsync(query.ToString()!, token);
     }
 
-    public WeerLiveResponse? Get(string location, string? apiKey = null, CancellationToken token = default)
+    public WeerLiveResponse Get(string location, string? apiKey = null, CancellationToken token = default)
     {
         return GetAsync(location, apiKey, token).Result;
     }
 
-    public async Task<WeerLiveResponse?> GetAsync(decimal latitude, decimal longitude, string? apiKey = null,
+    public async Task<WeerLiveResponse> GetAsync(decimal latitude, decimal longitude, string? apiKey = null,
         CancellationToken token = default)
     {
         var query = HttpUtility.ParseQueryString(string.Empty);
         query["key"] = apiKey ?? options.Value.ApiKey;
         query["locatie"] = $"{latitude},{longitude}";
 
-        var response = await client.GetAsync($"{BaseUrl}?{query}", token);
-        response.EnsureSuccessStatusCode();
-
-        return await response.Content.ReadFromJsonAsync<WeerLiveResponse>(token);
+        return await GetAsync(query.ToString()!, token);
     }
 
-    public WeerLiveResponse? Get(decimal latitude, decimal longitude, string? apiKey = null,
+    public WeerLiveResponse Get(decimal latitude, decimal longitude, string? apiKey = null,
         CancellationToken token = default)
     {
         return GetAsync(latitude, longitude, apiKey, token).Result;
+    }
+
+    private async Task<WeerLiveResponse> GetAsync(string query, CancellationToken token)
+    {
+        var response = await client.GetAsync($"{BaseUrl}?{query}", token);
+        response.EnsureSuccessStatusCode();
+
+        var responseContent = await response.Content.ReadFromJsonAsync<WeerLiveResponse>(token);
+        if (responseContent is null)
+            throw new WeerLiveException("Failed to retrieve weather data.");
+
+        if (!string.IsNullOrEmpty(responseContent.LiveWeather?.Error))
+            throw new WeerLiveException(responseContent.LiveWeather.Error);
+
+        return responseContent;
     }
 }

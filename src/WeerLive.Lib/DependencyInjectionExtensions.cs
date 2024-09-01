@@ -10,13 +10,17 @@ public static class DependencyInjectionExtensions
     /// </summary>
     /// <param name="services">Service collection</param>
     /// <param name="configure">API key provider.</param>
+    /// <param name="configureHttpClient">Delegate used to configure the http client.</param>
     public static IServiceCollection AddWeerLive(this IServiceCollection services,
-        Action<WeerLiveOptions>? configure = null)
+        Action<WeerLiveOptions>? configure = null,
+        Action<HttpClient>? configureHttpClient = null)
     {
         if (configure is not null)
             services.Configure(configure);
 
-        services.AddHttpClient<IWeerLiveClient, WeerLiveClient>();
+        configureHttpClient ??= _ => { };
+
+        services.AddHttpClient<IWeerLiveClient, WeerLiveClient>(configureHttpClient);
         return services;
     }
 }

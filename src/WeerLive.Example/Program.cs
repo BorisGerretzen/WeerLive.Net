@@ -15,7 +15,7 @@ var client = serviceScope.ServiceProvider.GetRequiredService<IWeerLiveClient>();
 var logger = serviceScope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
 var forecast = await client.GetAsync("Amsterdam");
-if (forecast?.LiveWeather is null)
+if (forecast.LiveWeather is null)
 {
     logger.LogError("Failed to get weather forecast.");
     return;

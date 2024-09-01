@@ -11,7 +11,7 @@ public interface IWeerLiveClient
     /// <param name="apiKey">API key to use if no provider is registered.</param>
     /// <param name="token">Cancellation token.</param>
     /// <returns>Response from WeerLive.</returns>
-    Task<WeerLiveResponse?> GetAsync(string location, string? apiKey = null, CancellationToken token = default);
+    Task<WeerLiveResponse> GetAsync(string location, string? apiKey = null, CancellationToken token = default);
 
     /// <inheritdoc cref="GetAsync(string,string?,CancellationToken)" />
     WeerLiveResponse? Get(string location, string? apiKey = null, CancellationToken token = default);
@@ -24,7 +24,7 @@ public interface IWeerLiveClient
     /// <param name="apiKey">API key to use if no provider is registered.</param>
     /// <param name="token">Cancellation token.</param>
     /// <returns>Response from WeerLive.</returns>
-    Task<WeerLiveResponse?> GetAsync(decimal latitude, decimal longitude, string? apiKey = null,
+    Task<WeerLiveResponse> GetAsync(decimal latitude, decimal longitude, string? apiKey = null,
         CancellationToken token = default);
 
     /// <inheritdoc cref="GetAsync(decimal,decimal,string?,CancellationToken)" />

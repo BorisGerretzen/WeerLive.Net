@@ -31,7 +31,8 @@ public class WeerLiveLiveWeather(
     string warningColor,
     string weatherAlertStart,
     long weatherAlertTimestamp,
-    string weatherAlertColorCode)
+    string weatherAlertColorCode,
+    string? error)
 {
     /// <summary>
     ///     The location of the weather data.
@@ -209,4 +210,10 @@ public class WeerLiveLiveWeather(
     /// </summary>
     [JsonPropertyName("wrsch_gc")]
     public string WeatherAlertColorCode { get; set; } = weatherAlertColorCode;
+
+    /// <summary>
+    ///     Error message if the request failed.
+    /// </summary>
+    [JsonPropertyName("fout")]
+    public string? Error { get; set; } = error;
 }

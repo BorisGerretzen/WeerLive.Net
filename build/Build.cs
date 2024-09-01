@@ -45,7 +45,7 @@ class Build : NukeBuild
 
     Project LibProject => Solution.GetProject("WeerLive.Lib");
 
-    Target Clean => _ => _
+    Target Clean => t => t
         .Before(Restore)
         .Executes(() =>
         {
@@ -54,7 +54,7 @@ class Build : NukeBuild
             ArtifactsDirectory.CreateOrCleanDirectory();
         });
 
-    Target Restore => _ => _
+    Target Restore => t => t
         .Executes(() =>
         {
             DotNetRestore(s => s
@@ -62,7 +62,7 @@ class Build : NukeBuild
             );
         });
 
-    Target Compile => _ => _
+    Target Compile => t => t
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -92,7 +92,7 @@ class Build : NukeBuild
             );
         });
 
-    Target Test => _ => _
+    Target Test => t => t
         .DependsOn(Compile)
         .Executes(() =>
         {
@@ -105,8 +105,7 @@ class Build : NukeBuild
             );
         });
 
-    // ReSharper disable once UnusedMember.Local
-    Target Pack => _ => _
+    Target Pack => t => t
         .DependsOn(Clean, Test)
         .Requires(() => Configuration == Configuration.Release)
         .Executes(() =>
@@ -121,8 +120,7 @@ class Build : NukeBuild
             );
         });
 
-    // ReSharper disable once UnusedMember.Local
-    Target Push => _ => _
+    Target Push => t => t
         .After(Pack)
         .Executes(() =>
         {
@@ -135,6 +133,10 @@ class Build : NukeBuild
             );
 
             var version = PackageVersion ?? GitVersion.NuGetVersionV2;
+
+            // check if current version is already tagged
+            if (Git($"tag --list {version}").Count != 0)
+                return;
 
             Git("config --global user.email \"<>\"");
             Git("config --global user.name \"GitHub Actions\"");
